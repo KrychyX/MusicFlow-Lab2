@@ -1,91 +1,83 @@
-# 🏗️ System Architecture: TaxForex
+# 🏗️ System Architecture: MusicFlow
 
 ## 📊 Architecture Overview
 
 ```mermaid
 graph TB
-    subgraph "👤 Пользователь (ИП)"
-        U[Индивидуальный предприниматель]
+    subgraph "👤 Пользователь"
+        U[Меломан/Коллекционер]
     end
 
     %% ---------- Frontend ----------
     subgraph "🌐 Frontend (React + TypeScript)"
-        U --> |HTTPS| RA[React App<br/>Интерфейс TaxForex]
+        U --> |HTTPS| RA[React App<br/>MusicFlow Interface]
         RA --> |REST API| GW[API Gateway]
     end
 
     %% ---------- Backend Services ----------
     subgraph "⚙️ Backend (Node.js + Express)"
-        GW --> |/api/operations| OC[Operations Controller<br/>Управление операциями]
-        GW --> |/api/rates| RC[Rates Controller<br/>Курсы валют]
-        GW --> |/api/reports| REPC[Reports Controller<br/>Отчеты]
-        GW --> |/api/export| EXPC[Export Controller<br/>Экспорт данных]
+        GW --> |/api/tracks| TC[Tracks Controller]
+        GW --> |/api/artists| AC[Artists Controller]
+        GW --> |/api/albums| ALC[Albums Controller]
+        GW --> |/api/playlists| PC[Playlists Controller]
+        GW --> |/api/import| IC[Import Controller]
+        GW --> |/api/stats| SC[Stats Controller]
         
-        OC --> OS[Operations Service]
-        RC --> RS[Rates Service]
-        REPC --> REPS[Reports Service]
-        EXPC --> EXPS[Export Service]
+        TC --> TS[Track Service]
+        AC --> AS[Artist Service]
+        ALC --> ALS[Album Service]
+        PC --> PS[Playlist Service]
+        IC --> IS[Import Service]
+        SC --> SS[Stats Service]
         
-        RS --> CBR[ЦБ РФ API<br/>курсы валют]
+        IS --> ID3[ID3 Metadata Parser]
+        TS --> WA[Web Audio Analyzer]
     end
 
     %% ---------- Data Access ----------
     subgraph "🗃️ Доступ к данным"
-        OS --> OR[(Operations Repository)]
-        REPS --> RR[(Reports Repository)]
+        TS --> TR[(Tracks Repository)]
+        AS --> AR[(Artists Repository)]
+        ALS --> ALR[(Albums Repository)]
+        PS --> PR[(Playlists Repository)]
+        SS --> SR[(Stats Repository)]
         
-        OR --> DB[(PostgreSQL<br/>Основная БД)]
-        RR --> DB
+        TR --> DB[(PostgreSQL<br/>Music Database)]
+        AR --> DB
+        ALR --> DB
+        PR --> DB
+        SR --> DB
     end
 
     %% ---------- Storage ----------
     subgraph "💾 Хранилище данных"
-        DB --> |постоянное хранение| PSQL[(Диск PostgreSQL)]
-        EXPS --> |экспорт файлов| FS[Файловое хранилище<br/>PDF/CSV]
+        DB --> |metadata| PGSQL[(PostgreSQL Storage)]
+        IS --> |audio files| S3[(S3 Storage<br/>Audio Files)]
+        IC --> |import logs| FS[(File System<br/>Logs)]
     end
 
-    %% ---------- External Services ----------
-    subgraph "📡 Внешние сервисы"
-        CBR --> |JSON API| CBR_API[api.cbr.ru<br/>Курсы валют ЦБ РФ]
+    %% ---------- Search ----------
+    subgraph "🔍 Поисковая система"
+        TS --> ES[Elasticsearch]
+        ES --> |indexing| EST[(Search Index)]
     end
 
-    %% ---------- Security ----------
-    subgraph "🔐 Безопасность"
-        GW --> VAL[Валидация данных]
-        GW --> AUTH[Аутентификация]
-        AUTH --> JWT[JWT Tokens]
+    %% ---------- Cache ----------
+    subgraph "⚡ Кэширование"
+        TS --> RED[Redis Cache]
+        RED --> |cached metadata| RC[(Redis Storage)]
     end
 
-    %% ---------- Monitoring ----------
-    subgraph "📊 Мониторинг"
-        GW --> LOG[Логирование]
-        LOG --> ELK[ELK Stack]
-        GW --> MON[Метрики]
-        MON --> PROM[Prometheus]
-    end
-
-    %% ---------- Deployment ----------
-    subgraph "🐳 Деплой и инфраструктура"
-        RA --> |build| S3[Amazon S3 / Cloud Storage<br/>Статические файлы]
-        GW --> |container| DOCK[Docker Container<br/>Backend]
-        DB --> |container| DB_DOCK[Docker Container<br/>PostgreSQL]
-        DOCK --> K8S[Kubernetes Cluster]
-        DB_DOCK --> K8S
-    end
-
-    %% ---------- Стили ----------
-    classDef frontend fill:#61dafb,stroke:#282c34,color:#000
-    classDef backend fill:#6db33f,stroke:#fff,color:#000
-    classDef db fill:#336791,stroke:#fff,color:#fff
-    classDef external fill:#f9d71c,stroke:#000,color:#000
-    classDef security fill:#ff6b6b,stroke:#fff,color:#000
-    classDef monitoring fill:#9b59b6,stroke:#fff,color:#fff
-    classDef deployment fill:#239aef,stroke:#fff,color:#fff
+    classDef frontend fill:#8B5CF6,stroke:#fff,color:#fff
+    classDef backend fill:#6366F1,stroke:#fff,color:#fff
+    classDef db fill:#1E1B4B,stroke:#fff,color:#fff
+    classDef storage fill:#3730A3,stroke:#fff,color:#fff
+    classDef search fill:#7E22CE,stroke:#fff,color:#fff
+    classDef cache fill:#A855F7,stroke:#fff,color:#000
 
     class RA frontend
-    class GW,OC,RC,REPC,EXPC,OS,RS,REPS,EXPS backend
-    class DB,OR,RR,PSQL,FS db
-    class CBR,CBR_API external
-    class VAL,AUTH,JWT security
-    class LOG,ELK,MON,PROM monitoring
-    class S3,DOCK,DB_DOCK,K8S deployment
+    class GW,TC,AC,ALC,PC,IC,SC,TS,AS,ALS,PS,IS,SS,ID3,WA backend
+    class DB,TR,AR,ALR,PR,SR,PGSQL db
+    class S3,FS storage
+    class ES,EST search
+    class RED,RC cache
