@@ -95,31 +95,31 @@
 
 Главная страница - Дашборд с статистикой коллекции.  
 
-![Дашборд](../mockups/dashboard.png)  
+![Дашборд](mockups/dashboard.png)  
 
 Библиотека треков с расширенной фильтрацией.  
 
-![Библиотека треков](../mockups/tracks-library.png)  
+![Библиотека треков](mockups/tracks-library.png)  
 
 Детальная страница трека с метаданными.  
 
-![Детали трека](../mockups/track-details.png)  
+![Детали трека](mockups/track-details.png)  
 
 Страница исполнителей с обложками и статистикой.  
 
-![Исполнители](../mockups/artists.png)  
+![Исполнители](mockups/artists.png)  
 
 Страница альбомов в виде сетки.  
 
-![Альбомы](../mockups/albums.png)  
+![Альбомы](mockups/albums.png)  
 
 Управление плейлистами с drag-and-drop.  
 
-![Плейлисты](../mockups/playlists.png)  
+![Плейлисты](mockups/playlists.png)  
 
 Импорт/экспорт музыкальных файлов.  
 
-![Импорт/экспорт](../mockups/import-export.png)  
+![Импорт/экспорт](mockups/import-export.png)  
 
 <a name="user_specifications"/>
 
