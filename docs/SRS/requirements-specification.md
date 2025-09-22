@@ -1,4 +1,7 @@
 
+---
+
+## 📄 2. Файл: `docs/SRS/requirements-specification.md`
 
 ```markdown
 # 📋 System Requirements Specification
