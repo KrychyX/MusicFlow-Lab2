@@ -1,0 +1,56 @@
+[
+  {
+    "id": "1",
+    "name": "Любимые треки",
+    "description": "Мои самые любимые композиции",
+    "tracks": 24,
+    "duration": "2h 15m",
+    "created": "15 октября 2024",
+    "isPublic": false
+  },
+  {
+    "id": "2",
+    "name": "Рок классика",
+    "description": "Лучшие рок-композиции всех времен",
+    "tracks": 35,
+    "duration": "3h 10m",
+    "created": "12 октября 2024",
+    "isPublic": true
+  },
+  {
+    "id": "3",
+    "name": "Для работы",
+    "description": "Фоновая музыка для концентрации",
+    "tracks": 18,
+    "duration": "1h 45m",
+    "created": "10 октября 2024",
+    "isPublic": false
+  },
+  {
+    "id": "4",
+    "name": "Поп-хиты 80-х",
+    "description": "Лучшие поп-композиции 80-х годов",
+    "tracks": 22,
+    "duration": "1h 55m",
+    "created": "8 октября 2024",
+    "isPublic": true
+  },
+  {
+    "id": "5",
+    "name": "Утренний заряд",
+    "description": "Энергичная музыка для хорошего начала дня",
+    "tracks": 15,
+    "duration": "1h 20m",
+    "created": "5 октября 2024",
+    "isPublic": false
+  },
+  {
+    "id": "6",
+    "name": "Вечерний релакс",
+    "description": "Спокойная музыка для отдыха",
+    "tracks": 20,
+    "duration": "1h 50m",
+    "created": "3 октября 2024",
+    "isPublic": true
+  }
+]

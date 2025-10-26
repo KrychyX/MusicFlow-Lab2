@@ -1,0 +1,98 @@
+[
+  {
+    "id": "1",
+    "title": "A Night at the Opera",
+    "artist": "Queen",
+    "genre": "Rock",
+    "year": 1975,
+    "duration": "43:08",
+    "tracks": 12,
+    "rating": 4.8,
+    "liked": true,
+    "cover": null
+  },
+  {
+    "id": "2",
+    "title": "Hotel California",
+    "artist": "Eagles",
+    "genre": "Rock",
+    "year": 1976,
+    "duration": "43:28",
+    "tracks": 9,
+    "rating": 4.7,
+    "liked": false,
+    "cover": null
+  },
+  {
+    "id": "3",
+    "title": "Thriller",
+    "artist": "Michael Jackson",
+    "genre": "Pop",
+    "year": 1982,
+    "duration": "42:19",
+    "tracks": 9,
+    "rating": 4.9,
+    "liked": true,
+    "cover": null
+  },
+  {
+    "id": "4",
+    "title": "Appetite for Destruction",
+    "artist": "Guns N' Roses",
+    "genre": "Rock",
+    "year": 1987,
+    "duration": "53:51",
+    "tracks": 12,
+    "rating": 4.8,
+    "liked": true,
+    "cover": null
+  },
+  {
+    "id": "5",
+    "title": "Nevermind",
+    "artist": "Nirvana",
+    "genre": "Grunge",
+    "year": 1991,
+    "duration": "42:38",
+    "tracks": 13,
+    "rating": 4.7,
+    "liked": false,
+    "cover": null
+  },
+  {
+    "id": "6",
+    "title": "Hunting High and Low",
+    "artist": "a-ha",
+    "genre": "Pop",
+    "year": 1985,
+    "duration": "41:04",
+    "tracks": 10,
+    "rating": 4.3,
+    "liked": false,
+    "cover": null
+  },
+  {
+    "id": "7",
+    "title": "Highway 61 Revisited",
+    "artist": "Bob Dylan",
+    "genre": "Folk Rock",
+    "year": 1965,
+    "duration": "51:26",
+    "tracks": 9,
+    "rating": 4.6,
+    "liked": true,
+    "cover": null
+  },
+  {
+    "id": "8",
+    "title": "Imagine",
+    "artist": "John Lennon",
+    "genre": "Rock",
+    "year": 1971,
+    "duration": "39:29",
+    "tracks": 10,
+    "rating": 4.5,
+    "liked": true,
+    "cover": null
+  }
+]

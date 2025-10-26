@@ -1,0 +1,82 @@
+[
+  {
+    "id": "1",
+    "name": "Queen",
+    "genre": "Rock",
+    "followers": 28500000,
+    "tracks": 184,
+    "albums": 15,
+    "totalDuration": "18h 42m",
+    "trending": true
+  },
+  {
+    "id": "2",
+    "name": "Eagles",
+    "genre": "Rock",
+    "followers": 19800000,
+    "tracks": 87,
+    "albums": 7,
+    "totalDuration": "9h 15m",
+    "trending": false
+  },
+  {
+    "id": "3",
+    "name": "Michael Jackson",
+    "genre": "Pop",
+    "followers": 35400000,
+    "tracks": 156,
+    "albums": 10,
+    "totalDuration": "12h 30m",
+    "trending": true
+  },
+  {
+    "id": "4",
+    "name": "Guns N' Roses",
+    "genre": "Rock",
+    "followers": 22700000,
+    "tracks": 94,
+    "albums": 6,
+    "totalDuration": "8h 45m",
+    "trending": false
+  },
+  {
+    "id": "5",
+    "name": "Nirvana",
+    "genre": "Grunge",
+    "followers": 19300000,
+    "tracks": 67,
+    "albums": 3,
+    "totalDuration": "5h 20m",
+    "trending": true
+  },
+  {
+    "id": "6",
+    "name": "a-ha",
+    "genre": "Pop",
+    "followers": 8700000,
+    "tracks": 123,
+    "albums": 11,
+    "totalDuration": "10h 15m",
+    "trending": false
+  },
+  {
+    "id": "7",
+    "name": "Bob Dylan",
+    "genre": "Folk Rock",
+    "followers": 12500000,
+    "tracks": 234,
+    "albums": 39,
+    "totalDuration": "22h 10m",
+    "trending": false
+  },
+  {
+    "id": "8",
+    "name": "John Lennon",
+    "genre": "Rock",
+    "followers": 15800000,
+    "tracks": 89,
+    "albums": 7,
+    "totalDuration": "7h 45m",
+    "trending": true
+  }
+]

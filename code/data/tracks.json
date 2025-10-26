@@ -1,0 +1,90 @@
+[
+  {
+    "id": "1",
+    "title": "Bohemian Rhapsody",
+    "artist": "Queen",
+    "album": "A Night at the Opera",
+    "genre": "Rock",
+    "year": 1975,
+    "duration": "5:55",
+    "bitrate": "320 kbps",
+    "liked": true
+  },
+  {
+    "id": "2",
+    "title": "Hotel California",
+    "artist": "Eagles",
+    "album": "Hotel California",
+    "genre": "Rock",
+    "year": 1976,
+    "duration": "6:30",
+    "bitrate": "320 kbps",
+    "liked": false
+  },
+  {
+    "id": "3",
+    "title": "Sweet Child O' Mine",
+    "artist": "Guns N' Roses",
+    "album": "Appetite for Destruction",
+    "genre": "Rock",
+    "year": 1987,
+    "duration": "5:56",
+    "bitrate": "320 kbps",
+    "liked": true
+  },
+  {
+    "id": "4",
+    "title": "Billie Jean",
+    "artist": "Michael Jackson",
+    "album": "Thriller",
+    "genre": "Pop",
+    "year": 1982,
+    "duration": "4:54",
+    "bitrate": "320 kbps",
+    "liked": true
+  },
+  {
+    "id": "5",
+    "title": "Smells Like Teen Spirit",
+    "artist": "Nirvana",
+    "album": "Nevermind",
+    "genre": "Grunge",
+    "year": 1991,
+    "duration": "5:01",
+    "bitrate": "320 kbps",
+    "liked": false
+  },
+  {
+    "id": "6",
+    "title": "Take On Me",
+    "artist": "a-ha",
+    "album": "Hunting High and Low",
+    "genre": "Pop",
+    "year": 1985,
+    "duration": "3:48",
+    "bitrate": "320 kbps",
+    "liked": true
+  },
+  {
+    "id": "7",
+    "title": "Like a Rolling Stone",
+    "artist": "Bob Dylan",
+    "album": "Highway 61 Revisited",
+    "genre": "Folk Rock",
+    "year": 1965,
+    "duration": "6:13",
+    "bitrate": "320 kbps",
+    "liked": false
+  },
+  {
+    "id": "8",
+    "title": "Imagine",
+    "artist": "John Lennon",
+    "album": "Imagine",
+    "genre": "Rock",
+    "year": 1971,
+    "duration": "3:04",
+    "bitrate": "320 kbps",
+    "liked": true
+  }
+]
