@@ -13,12 +13,12 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// В продакшене раздаем статику из папки build
 app.use(express.static(join(__dirname, 'build')));
+app.use('/audio', express.static(join(__dirname, 'audio'))); // Для аудио файлов
 
 // Путь к данным
 const dataPath = join(__dirname, 'data');
+const audioPath = join(__dirname, 'audio');
 
 // Вспомогательные функции для работы с JSON
 const readJSON = async (file) => {
@@ -45,7 +45,12 @@ const writeJSON = async (file, data) => {
 app.get('/api/tracks', async (req, res) => {
     try {
         const tracks = await readJSON('tracks.json');
-        res.json(tracks);
+        // Добавляем URL для аудио
+        const tracksWithAudio = tracks.map(track => ({
+            ...track,
+            audioUrl: `/audio/${track.id}.mp3`
+        }));
+        res.json(tracksWithAudio);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch tracks' });
     }
@@ -57,7 +62,13 @@ app.get('/api/tracks/:id', async (req, res) => {
         const tracks = await readJSON('tracks.json');
         const track = tracks.find(t => t.id === req.params.id);
         if (!track) return res.status(404).json({ error: 'Track not found' });
-        res.json(track);
+
+        // Добавляем URL для аудио
+        const trackWithAudio = {
+            ...track,
+            audioUrl: `/audio/${track.id}.mp3`
+        };
+        res.json(trackWithAudio);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch track' });
     }
@@ -93,6 +104,22 @@ app.post('/api/tracks/:id/like', async (req, res) => {
     }
 });
 
+// Получить аудио файл трека
+app.get('/api/tracks/:id/audio', async (req, res) => {
+    try {
+        const audioFile = join(audioPath, `${req.params.id}.mp3`);
+        try {
+            await fs.access(audioFile);
+            res.sendFile(audioFile);
+        } catch {
+            // Если файла нет, отдаем заглушку или ошибку
+            res.status(404).json({ error: 'Audio file not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch audio' });
+    }
+});
+
 // Получить всех исполнителей
 app.get('/api/artists', async (req, res) => {
     try {
@@ -103,6 +130,29 @@ app.get('/api/artists', async (req, res) => {
     }
 });
 
+// Получить треки исполнителя
+app.get('/api/artists/:id/tracks', async (req, res) => {
+    try {
+        const [tracks, artists] = await Promise.all([
+            readJSON('tracks.json'),
+            readJSON('artists.json')
+        ]);
+
+        const artist = artists.find(a => a.id === req.params.id);
+        if (!artist) return res.status(404).json({ error: 'Artist not found' });
+
+        const artistTracks = tracks.filter(track => track.artist === artist.name)
+            .map(track => ({
+                ...track,
+                audioUrl: `/audio/${track.id}.mp3`
+            }));
+
+        res.json(artistTracks);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch artist tracks' });
+    }
+});
+
 // Получить все альбомы
 app.get('/api/albums', async (req, res) => {
     try {
@@ -110,6 +160,29 @@ app.get('/api/albums', async (req, res) => {
         res.json(albums);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch albums' });
+    }
+});
+
+// Получить треки альбома
+app.get('/api/albums/:id/tracks', async (req, res) => {
+    try {
+        const [tracks, albums] = await Promise.all([
+            readJSON('tracks.json'),
+            readJSON('albums.json')
+        ]);
+
+        const album = albums.find(a => a.id === req.params.id);
+        if (!album) return res.status(404).json({ error: 'Album not found' });
+
+        const albumTracks = tracks.filter(track => track.album === album.title)
+            .map(track => ({
+                ...track,
+                audioUrl: `/audio/${track.id}.mp3`
+            }));
+
+        res.json(albumTracks);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch album tracks' });
     }
 });
 
@@ -156,6 +229,16 @@ app.delete('/api/playlists/:id', async (req, res) => {
     }
 });
 
+// Добавить трек в плейлист
+app.post('/api/playlists/:playlistId/tracks/:trackId', async (req, res) => {
+    try {
+        // Здесь можно добавить логику добавления треков в плейлисты
+        res.json({ message: 'Track added to playlist' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to add track to playlist' });
+    }
+});
+
 // Статистика
 app.get('/api/stats', async (req, res) => {
     try {
@@ -170,10 +253,52 @@ app.get('/api/stats', async (req, res) => {
             totalTracks: tracks.length,
             totalArtists: artists.length,
             totalAlbums: albums.length,
-            totalPlaylists: playlists.length
+            totalPlaylists: playlists.length,
+            totalDuration: tracks.reduce((total, track) => {
+                const [min, sec] = track.duration.split(':').map(Number);
+                return total + min * 60 + sec;
+            }, 0),
+            likedTracks: tracks.filter(t => t.liked).length
         });
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch stats' });
+    }
+});
+
+// Поиск по всей библиотеке
+app.get('/api/search', async (req, res) => {
+    try {
+        const query = req.query.q?.toLowerCase();
+        if (!query) return res.json({ tracks: [], artists: [], albums: [] });
+
+        const [tracks, artists, albums] = await Promise.all([
+            readJSON('tracks.json'),
+            readJSON('artists.json'),
+            readJSON('albums.json')
+        ]);
+
+        const searchResults = {
+            tracks: tracks.filter(track =>
+                track.title.toLowerCase().includes(query) ||
+                track.artist.toLowerCase().includes(query) ||
+                track.album.toLowerCase().includes(query)
+            ).map(track => ({
+                ...track,
+                audioUrl: `/audio/${track.id}.mp3`
+            })),
+            artists: artists.filter(artist =>
+                artist.name.toLowerCase().includes(query) ||
+                artist.genre.toLowerCase().includes(query)
+            ),
+            albums: albums.filter(album =>
+                album.title.toLowerCase().includes(query) ||
+                album.artist.toLowerCase().includes(query)
+            )
+        };
+
+        res.json(searchResults);
+    } catch (error) {
+        res.status(500).json({ error: 'Search failed' });
     }
 });
 
@@ -185,4 +310,5 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
     console.log(`🎵 MusicFlow server running on http://localhost:${PORT}`);
     console.log(`📊 API available at http://localhost:${PORT}/api`);
+    console.log(`🎧 Audio files available at http://localhost:${PORT}/audio`);
 });
