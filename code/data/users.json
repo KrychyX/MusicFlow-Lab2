@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1761516405438",
+    "username": "Кирилл",
+    "email": "kryk.97325@gmail.com",
+    "password": "$2b$10$qaevP6n5cVjDqUWnY8z0D.5mCf8Ykck8mQnngmVErblhLkjv2qrLy",
+    "createdAt": "2025-10-26T22:06:45.438Z",
+    "preferences": {
+      "theme": "dark",
+      "language": "ru",
+      "audioQuality": "high"
+    }
+  }
+]

@@ -8,6 +8,8 @@ import { Albums } from "./components/Albums"
 import { Playlists } from "./components/Playlists"
 import { ImportExport } from "./components/ImportExport"
 import { Search } from "./components/Search"
+import { History } from "./components/History"
+import { Auth } from "./components/Auth"
 import { MusicPlayer } from "./components/MusicPlayer"
 import { Toaster } from "./components/ui/sonner"
 import { toast } from "sonner"
@@ -23,6 +25,7 @@ interface Track {
   duration: string
   bitrate: string
   liked: boolean
+  audioUrl?: string
 }
 
 interface Artist {
@@ -76,6 +79,10 @@ export default function App() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [likedTracks, setLikedTracks] = useState<Set<string>>(new Set())
 
+  // Аутентификация
+  const [user, setUser] = useState<any>(null)
+  const [token, setToken] = useState<string | null>(localStorage.getItem('token'))
+
   // Загрузка данных
   useEffect(() => {
     loadData()
@@ -107,12 +114,36 @@ export default function App() {
     }
   }
 
+  // Функция для добавления в историю прослушивания
+  const addToHistory = async (trackId: string) => {
+    if (!token) return
+
+    try {
+      await fetch('/api/history', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          trackId,
+          duration: 0 // Можно добавить реальную длительность позже
+        })
+      })
+    } catch (error) {
+      console.error('Error adding to history:', error)
+    }
+  }
+
   const handleTrackSelect = (trackId: string) => {
     const track = tracks.find(t => t.id === trackId)
     if (track) {
       setCurrentTrack(track)
       setIsPlaying(true)
       toast.success(`Воспроизводится: ${track.title}`)
+
+      // Добавляем в историю прослушивания
+      addToHistory(trackId)
     }
   }
 
@@ -161,6 +192,9 @@ export default function App() {
       setCurrentTrack(nextTrack)
       setIsPlaying(true)
       toast.info(`Следующий: ${nextTrack.title}`)
+
+      // Добавляем в историю прослушивания
+      addToHistory(nextTrack.id)
     }
   }
 
@@ -171,6 +205,9 @@ export default function App() {
       setCurrentTrack(prevTrack)
       setIsPlaying(true)
       toast.info(`Предыдущий: ${prevTrack.title}`)
+
+      // Добавляем в историю прослушивания
+      addToHistory(prevTrack.id)
     }
   }
 
@@ -197,6 +234,19 @@ export default function App() {
         handleTrackSelect(albumTracks[0].id)
       }
     }
+  }
+
+  // Функции для авторизации
+  const handleLogin = (userData: any, userToken: string) => {
+    setUser(userData)
+    setToken(userToken)
+    localStorage.setItem('token', userToken)
+  }
+
+  const handleLogout = () => {
+    setUser(null)
+    setToken(null)
+    localStorage.removeItem('token')
   }
 
   const renderContent = () => {
@@ -265,6 +315,22 @@ export default function App() {
                 onPlayTrack={handleTrackSelect}
                 playlists={playlists}
                 setPlaylists={setPlaylists}
+            />
+        )
+      case 'history':
+        return (
+            <History
+                onPlayTrack={handleTrackSelect}
+                token={token}
+            />
+        )
+      case 'profile':
+        return (
+            <Auth
+                onLogin={handleLogin}
+                onLogout={handleLogout}
+                user={user}
+                token={token}
             />
         )
       case 'import':

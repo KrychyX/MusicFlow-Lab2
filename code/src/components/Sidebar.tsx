@@ -1,4 +1,4 @@
-import { Music, Home, User, Album, ListMusic, Download, Play, Search } from "lucide-react"
+import { Music, Home, User, Album, ListMusic, Download, Play, Search, History } from "lucide-react"
 import { Button } from "./ui/button"
 
 interface SidebarProps {
@@ -14,6 +14,8 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
     { id: 'artists', label: 'Исполнители', icon: User },
     { id: 'albums', label: 'Альбомы', icon: Album },
     { id: 'playlists', label: 'Плейлисты', icon: ListMusic },
+    { id: 'history', label: 'История', icon: History },
+    { id: 'profile', label: 'Профиль', icon: User },
     { id: 'import', label: 'Импорт/Экспорт', icon: Download },
   ]
 
